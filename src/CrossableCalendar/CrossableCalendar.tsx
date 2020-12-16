@@ -1,9 +1,13 @@
 import React, { FC } from 'react'
 import styled from 'styled-components'
 
+import Day from './Day'
+
 const Grid = styled.div`
+  height: 100%;
   display: grid;
   grid-template-columns: repeat(7, calc(100% / 7));
+  align-items: stretch;
 `
 
 const CrossableCalendar: FC = () => {
@@ -12,7 +16,7 @@ const CrossableCalendar: FC = () => {
   return (
     <Grid>
       {arr.map((n) => (
-        <div key={n}>{`Test ${n}`}</div>
+        <Day key={n} day={n} isCrossed={true} isCurrentDay={false} />
       ))}
     </Grid>
   )
