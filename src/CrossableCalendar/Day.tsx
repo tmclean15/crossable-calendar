@@ -13,7 +13,7 @@ interface StyledDayProps {
 }
 
 const StyledDay = styled.div<StyledDayProps>`
-  height: calc(100% / 5);
+  height: auto;
   #day {
     padding: 5px;
   }
