@@ -1,9 +1,11 @@
-import React, { FC } from 'react'
+import React, { FC, useMemo } from 'react'
 import styled from 'styled-components'
+
+import generateDaysInMonth from '../utils/generateDaysInMonth'
 
 import Day from './Day'
 
-interface Props {
+interface CrossableCalendarProps {
   month: number
   year: number
   day: number
@@ -11,26 +13,36 @@ interface Props {
   crossedDays: Set<number>
 }
 
-const Grid = styled.div`
+interface GridProps {
+  numDaysInGrid: number
+}
+
+const Grid = styled.div<GridProps>`
   height: 100%;
   width: 100%;
   display: grid;
   grid-template-columns: repeat(7, calc(100% / 7));
-  grid-template-rows: repeat(5, calc(100% / 5));
+  grid-template-rows: ${({ numDaysInGrid }) => {
+    const rows = numDaysInGrid % 7
+    return `repeat(${rows}, calc(100% / ${rows}))`
+  }};
   align-items: stretch;
 `
 
-const CrossableCalendar: FC<Props> = ({
+const CrossableCalendar: FC<CrossableCalendarProps> = ({
   month,
   year,
   day,
   onClickDay,
   crossedDays,
 }) => {
-  const arr: number[] = [...Array(35).keys()]
+  const arr: number[] = useMemo(() => generateDaysInMonth(month, year), [
+    month,
+    year,
+  ])
 
   return (
-    <Grid>
+    <Grid numDaysInGrid={arr.length}>
       {arr.map((n) => (
         <Day
           key={n}

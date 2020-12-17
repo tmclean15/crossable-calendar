@@ -36,7 +36,7 @@ const App: FC = () => {
   return (
     <StyledAppContainer className="App">
       <CrossableCalendar
-        month={12}
+        month={11}
         year={2020}
         day={17}
         onClickDay={handleClickDay}
