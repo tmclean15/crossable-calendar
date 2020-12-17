@@ -5,6 +5,7 @@ interface DayProps {
   day: number
   isCrossed: boolean
   isCurrentDay: boolean
+  onClickDay: (day: number) => void
 }
 
 interface StyledDayProps {
@@ -21,9 +22,13 @@ const StyledDay = styled.div<StyledDayProps>`
   border: ${(props) => (props.isCurrentDay ? '2px solid blue' : 'none')};
 `
 
-const Day: FC<DayProps> = ({ day, isCrossed, isCurrentDay }) => {
+const Day: FC<DayProps> = ({ day, isCrossed, isCurrentDay, onClickDay }) => {
   return (
-    <StyledDay isCrossed={isCrossed} isCurrentDay={isCurrentDay}>
+    <StyledDay
+      isCrossed={isCrossed}
+      isCurrentDay={isCurrentDay}
+      onClick={() => onClickDay(day)}
+    >
       <div id="day">{day}</div>
     </StyledDay>
   )

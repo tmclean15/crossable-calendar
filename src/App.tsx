@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, useState } from 'react'
 import styled from 'styled-components'
 
 import CrossableCalendar from './CrossableCalendar'
@@ -20,9 +20,28 @@ const StyledAppContainer = styled.div`
 `
 
 const App: FC = () => {
+  const [crossedDays, setCrossedDays] = useState(new Set<number>())
+
+  const handleClickDay = (day: number) => {
+    setCrossedDays(() => {
+      if (crossedDays.has(day)) {
+        const tmp = new Set([...crossedDays])
+        tmp.delete(day)
+        return tmp
+      }
+      return new Set([...crossedDays, day])
+    })
+  }
+
   return (
     <StyledAppContainer className="App">
-      <CrossableCalendar />
+      <CrossableCalendar
+        month={12}
+        year={2020}
+        day={17}
+        onClickDay={handleClickDay}
+        crossedDays={crossedDays}
+      />
     </StyledAppContainer>
   )
 }

@@ -3,6 +3,14 @@ import styled from 'styled-components'
 
 import Day from './Day'
 
+interface Props {
+  month: number
+  year: number
+  day: number
+  onClickDay: (day: number) => void
+  crossedDays: Set<number>
+}
+
 const Grid = styled.div`
   height: 100%;
   width: 100%;
@@ -12,13 +20,25 @@ const Grid = styled.div`
   align-items: stretch;
 `
 
-const CrossableCalendar: FC = () => {
-  const arr: number[] = [...Array(10).keys()]
+const CrossableCalendar: FC<Props> = ({
+  month,
+  year,
+  day,
+  onClickDay,
+  crossedDays,
+}) => {
+  const arr: number[] = [...Array(35).keys()]
 
   return (
     <Grid>
       {arr.map((n) => (
-        <Day key={n} day={n} isCrossed={true} isCurrentDay={true} />
+        <Day
+          key={n}
+          day={n}
+          isCrossed={crossedDays.has(n)}
+          isCurrentDay={n === day}
+          onClickDay={onClickDay}
+        />
       ))}
     </Grid>
   )
