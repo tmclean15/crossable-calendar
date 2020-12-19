@@ -17,7 +17,7 @@ interface GridProps {
   numDaysInGrid: number
 }
 
-const Grid = styled.div<GridProps>`
+const StyledGrid = styled.div<GridProps>`
   height: 100%;
   width: 100%;
   display: grid;
@@ -29,6 +29,14 @@ const Grid = styled.div<GridProps>`
   align-items: stretch;
 `
 
+const StyledDayOfWeek = styled.div`
+  border: 1px solid black;
+  background-color: #eee;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`
+
 const CrossableCalendar: FC<CrossableCalendarProps> = ({
   month,
   year,
@@ -36,13 +44,26 @@ const CrossableCalendar: FC<CrossableCalendarProps> = ({
   onClickDay,
   crossedDays,
 }) => {
+  const daysOfWeek = [
+    'Sunday',
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+  ]
+
   const arr: number[] = useMemo(() => generateDaysInMonth(month, year), [
     month,
     year,
   ])
 
   return (
-    <Grid numDaysInGrid={arr.length}>
+    <StyledGrid numDaysInGrid={arr.length}>
+      {daysOfWeek.map((day) => (
+        <StyledDayOfWeek key={day}>{day}</StyledDayOfWeek>
+      ))}
       {arr.map((n) => (
         <Day
           key={n}
@@ -52,7 +73,7 @@ const CrossableCalendar: FC<CrossableCalendarProps> = ({
           onClickDay={onClickDay}
         />
       ))}
-    </Grid>
+    </StyledGrid>
   )
 }
 
