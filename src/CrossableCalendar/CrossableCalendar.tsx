@@ -4,12 +4,17 @@ import styled from 'styled-components'
 import generateDaysInMonth from '../utils/generateDaysInMonth'
 
 import Day from './Day'
+import TopBar from './TopBar'
 
 interface CrossableCalendarProps {
   month: number
   year: number
-  day: number
+  day: number | null
   onClickDay: (day: number) => void
+  onClickForward: () => void
+  onClickBack: () => void
+  onToggleMonth: (month: number) => void
+  onToggleYear: (year: number) => void
   crossedDays: Set<number>
 }
 
@@ -37,43 +42,57 @@ const StyledDayOfWeek = styled.div`
   align-items: center;
 `
 
+const daysOfWeek = [
+  'Sunday',
+  'Monday',
+  'Tuesday',
+  'Wednesday',
+  'Thursday',
+  'Friday',
+  'Saturday',
+]
+
 const CrossableCalendar: FC<CrossableCalendarProps> = ({
   month,
   year,
   day,
-  onClickDay,
   crossedDays,
+  onClickDay,
+  onClickForward,
+  onClickBack,
+  onToggleMonth,
+  onToggleYear,
 }) => {
-  const daysOfWeek = [
-    'Sunday',
-    'Monday',
-    'Tuesday',
-    'Wednesday',
-    'Thursday',
-    'Friday',
-    'Saturday',
-  ]
-
   const arr: number[] = useMemo(() => generateDaysInMonth(month, year), [
     month,
     year,
   ])
 
   return (
-    <StyledGrid numDaysInGrid={arr.length}>
-      {daysOfWeek.map((day) => (
-        <StyledDayOfWeek key={day}>{day}</StyledDayOfWeek>
-      ))}
-      {arr.map((n) => (
-        <Day
-          key={n}
-          day={n}
-          isCrossed={crossedDays.has(n)}
-          isCurrentDay={n === day}
-          onClickDay={onClickDay}
-        />
-      ))}
-    </StyledGrid>
+    <>
+      <TopBar
+        month={month}
+        year={year}
+        onClickBack={onClickBack}
+        onClickForward={onClickForward}
+        onToggleMonth={onToggleMonth}
+        onToggleYear={onToggleYear}
+      />
+      <StyledGrid numDaysInGrid={arr.length}>
+        {daysOfWeek.map((day) => (
+          <StyledDayOfWeek key={day}>{day}</StyledDayOfWeek>
+        ))}
+        {arr.map((n, index) => (
+          <Day
+            key={index}
+            day={n}
+            isCrossed={crossedDays.has(n)}
+            isCurrentDay={n === day}
+            onClickDay={onClickDay}
+          />
+        ))}
+      </StyledGrid>
+    </>
   )
 }
 

@@ -19,7 +19,8 @@ export default function generateDaysInMonth(
     daysInMonth.push(i)
   }
 
-  const remainingDaysInGrid = 7 - (daysInMonth.length % 7)
+  const remaining = 7 - (daysInMonth.length % 7)
+  const remainingDaysInGrid = remaining === 7 ? 0 : remaining
 
   for (let i = 0; i < remainingDaysInGrid; i++) {
     daysInMonth.push(0)
