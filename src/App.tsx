@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useState, useEffect } from 'react'
 import styled from 'styled-components'
 
 import CrossableCalendar from './CrossableCalendar'
@@ -38,45 +38,39 @@ const App: FC = () => {
     })
   }
 
-  const updateDay = () => {
-    if (month === today.getMonth() && year === today.getFullYear()) {
-      setDay(today.getDate())
-      return
-    }
-    setDay(null)
-  }
-
   const handleClickBack = () => {
     if (month === 0) {
-      setMonth(11) // December
+      setMonth(11)
       setYear(year - 1)
-      updateDay()
       return
     }
     setMonth(month - 1)
-    updateDay()
   }
 
   const handleClickForward = () => {
     if (month === 11) {
       setMonth(0)
       setYear(year + 1)
-      updateDay()
       return
     }
     setMonth(month + 1)
-    updateDay()
   }
 
   const handleToggleMonth = (month: number) => {
     setMonth(month)
-    updateDay()
   }
 
   const handleToggleYear = (year: number) => {
     setYear(year)
-    updateDay()
   }
+
+  useEffect(() => {
+    if (month === today.getMonth() && year === today.getFullYear()) {
+      setDay(today.getDate())
+      return
+    }
+    setDay(null)
+  }, [month, year, today])
 
   return (
     <StyledAppContainer className="App">
